@@ -4,16 +4,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lingui": "lingui extract --clean --overwrite && lingui compile",
+    "build": "yarn lingui && next build",
+    "extract": "lingui extract",
+    "compile": "lingui compile"
   },
   "dependencies": {
     "next": "12.2.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "@lingui/core": "^3.13.3",
+    "@lingui/react": "^3.13.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@lingui/cli": "^3.13.3",
+    "@lingui/loader": "^3.13.3",
+    "@lingui/macro": "^3.13.3",
     "@types/node": "18.6.2",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
