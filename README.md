@@ -1,34 +1,83 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!-- I18N Language translation steps START-->
 
-## Getting Started
+<!-- SAMPLE CODE IS IN COMMENTS -->
 
-First, run the development server:
+1. ADD language locale code to `locales` array in `i18n` object in `next.config.js` file in root folder.
+   <!-- module.exports = {
+     i18n: {
+       locales: ['en', 'sr', 'es', `fr`,`<Add language locale code here> `, 'pseudo'],
+       defaultLocale: 'en',
+     },
+   } -->
+2. ADD language locale code to `locales` array in `lingui.config.js` file in root folder.
+   <!-- module.exports = {
+     locales: ['en', 'sr', 'es', `fr`,`<Add language locale code here>`,'pseudo'],
+     pseudoLocale: 'pseudo',
+     sourceLocale: 'en',
+     fallbackLocales: {
+       default: 'en',
+     },
+     catalogs: [
+       {
+         path: 'src/translations/locales/{locale}/messages',
+         include: ['src/pages', 'src/components'],
+       },
+     ],
+     format: 'po',
+   } -->
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+3) To add Plurals in add language locale code to `initTranslation` in `src/utils.js`.
+<!--
+export function initTranslation(i18n: I18n): void {
+  i18n.loadLocaleData({
+    en: { plurals: en },
+    sr: { plurals: sr },
+    es: { plurals: es },
+    <Add language locale code here>: { plurals: `<Add language locale code here>` },
+    pseudo: { plurals: en },
+  })
+}
+ -->
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Repeat the above steps for all the required languages.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<!-- ADDING TRANSLATION TO PAGES -->
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Import `GetStaticProps`,`t`,`loadTranslation` as shown in the below example.
+<!--
+import type { GetStaticProps } from 'next'
+import { t, Trans } from '@lingui/macro'
+import { loadTranslation } from '../utils'
+ -->
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+5. Export `GetStaticProps` before component declaration.
+ <!--
+ export const getStaticProps: GetStaticProps = async (ctx) => {
+  const translation = await loadTranslation(ctx.locale!, process.env.NODE_ENV === 'production')
+  return {
+    props: {
+      translation,
+    },
+  }
+} 
+ -->
 
-## Learn More
+6. a)Where `Trans` tag can be used, wrap the text in the `Trans` tag
+   <!-- <Trans>Hello World!</Trans> -->
 
-To learn more about Next.js, take a look at the following resources:
+   b)Where `Trans` tag can not be be used, use back-ticks (``) literal template syntax with "t" following the text.
+      <!-- {t`Hello World!`} -->
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+7. Run the command `yarn extract`, to get `src/translations/{language}/messages.po`, this file is used by NEXT.JS in development mode.
+8. Run the command `yarn compile`, to get `src/translations/{language}/messages.js`, this file is used by NEXT.JS in production mode.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+9. In messages.po file there will be a list of message id's `msgid` and message string's `msgstr`.
+Complete the message strings with the respective language translated strings.
+<!--
+#: src/pages/allRaces.tsx:44
+msgid "All Races"
+msgstr "Toutes les courses" -->
 
-## Deploy on Vercel
+10. After completing the above steps check for steps 7,9 to see if any translations are missing.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<!-- I18N Language translation steps END-->
