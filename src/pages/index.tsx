@@ -4,6 +4,7 @@ import type { GetStaticProps } from "next";
 import { t } from "@lingui/macro";
 import { loadTranslation } from "../utils";
 import { Switcher } from "../components/Switcher/Switcher";
+import Test from "../components/Test";
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const translation = await loadTranslation(
     ctx.locale!,
@@ -18,7 +19,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const Home: NextPage = () => {
   return (
     <>
-      <div>{t`Hello world`}</div>
+      <div>From Page: {t`Hello world`}</div>
+      <Test />
       <Switcher />
     </>
   );

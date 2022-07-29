@@ -13,10 +13,10 @@ export function initTranslation(i18n: I18n): void {
 export async function loadTranslation(locale: string, isProduction: boolean) {
   let data;
   if (isProduction) {
-    data = await import(`./src/translations/locales/${locale}/messages`);
+    data = await import(`./translations/locales/${locale}/messages`);
   } else {
     data = await import(
-      `@lingui/loader!./src/translations/locales/${locale}/messages.po`
+      `@lingui/loader!./translations/locales/${locale}/messages.po`
     );
   }
   return data.messages;

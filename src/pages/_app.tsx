@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import "../styles/globals.css";
+import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 
 import { i18n } from "@lingui/core";
